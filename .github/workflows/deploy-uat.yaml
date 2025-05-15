@@ -1,0 +1,20 @@
+name: Push Backend Docker image
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - 'uat/**'
+      
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Extract Docker image metadata
+        id: meta
+        uses: docker/metadata-action@v5
+        with:
+          images: ${{ vars.DOCKER_USERNAME }}/my-image
