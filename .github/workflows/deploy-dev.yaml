@@ -43,9 +43,11 @@ jobs:
 
     - name: Render K8s manifest from template
       run: |
-        envsubst < k8s/deployment.yaml.tpl > k8s/deployment.yaml
+        mkdir k8s
+        envsubst < template/deployment.yaml.tpl > k8s/deployment.yaml
+        envsubst < template/service.yaml.tpl > k8s/service.yaml
 
     - name: Apply manifest
       run: |
-        kubectl apply -f template/deployment.yaml
-        kubectl apply -f template/service.yaml
+        kubectl apply -f k8s/deployment.yaml
+        kubectl apply -f k8s/service.yaml
