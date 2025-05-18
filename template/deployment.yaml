@@ -13,7 +13,7 @@ spec:
         app: backend
     spec:
       containers:
-        - name: backend
-          image: ${ IMAGE }
-          ports:
-            - containerPort: 8080
+      - name: backend
+        image: ${BACKEND_IMAGE}
+        ports:
+        - containerPort: 8080
