@@ -44,6 +44,7 @@ jobs:
     - name: Render K8s manifest from template
       run: |
         mkdir k8s
+        export BACKEND_IMAGE=${IMAGE}
         envsubst < template/deployment.yaml.tpl > k8s/deployment.yaml
         envsubst < template/service.yaml.tpl > k8s/service.yaml
 
