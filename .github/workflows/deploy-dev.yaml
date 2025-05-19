@@ -33,13 +33,13 @@ jobs:
       run: |
         echo "Image: $IMAGE"
         echo "Image tag only: $IMAGE_TAG"
-        
+
     - name: Render K8s manifest from template
       run: |
         mkdir k8s
         export BACKEND_IMAGE=${IMAGE}
-        envsubst < template/deployment.yaml.tpl > k8s/deployment.yaml
-        envsubst < template/service.yaml.tpl > k8s/service.yaml
+        envsubst < dev/deployment.yaml.tpl > k8s/deployment.yaml
+        envsubst < dev/service.yaml.tpl > k8s/service.yaml
 
     - name: Apply manifest
       run: |
