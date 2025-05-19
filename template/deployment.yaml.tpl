@@ -17,3 +17,5 @@ spec:
         image: ${BACKEND_IMAGE}
         ports:
         - containerPort: 8080
+      imagePullSecrets:
+      - name: dockerhub-secret
