@@ -33,14 +33,7 @@ jobs:
       run: |
         echo "Image: $IMAGE"
         echo "Image tag only: $IMAGE_TAG"
-
-    - name: Build and push Docker image
-      uses: docker/build-push-action@v5
-      with:
-        context: .
-        push: false
-        tags: ${{ env.IMAGE }}
-
+        
     - name: Render K8s manifest from template
       run: |
         mkdir k8s
