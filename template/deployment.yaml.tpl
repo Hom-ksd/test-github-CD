@@ -1,19 +1,20 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: backend-uat
+  name: backend
+  namespace: ${NAMESPACE}
 spec:
   replicas: 3
   selector:
-    matchLabels:
-      app: backend-uat
+    matchLabels:  
+      app: backend
   template:
     metadata:
       labels:
-        app: backend-uat
+        app: backend
     spec:
       containers:
-      - name: backend-uat
+      - name: backend
         image: ${BACKEND_IMAGE}
         ports:
         - containerPort: 8080

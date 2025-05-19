@@ -1,10 +1,11 @@
 apiVersion: v1
 kind: Service
 metadata:
-  name: backend-dev-service
+  name: backend-service
+  namespace: ${NAMESPACE}
 spec:
   selector:
-    app: backend-dev
+    app: backend-uat
   ports:
     - protocol: TCP
       port: 8080
