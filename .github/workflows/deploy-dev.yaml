@@ -42,11 +42,13 @@ jobs:
         export BACKEND_IMAGE=${IMAGE}
         envsubst < template/deployment.yaml.tpl > k8s/deployment.yaml
         envsubst < template/service.yaml.tpl > k8s/service.yaml
+        envsubst < template/namespace.yaml.tpl > k8s/namespace.yaml
       env:
           NAMESPACE: backend-dev
 
     - name: Apply manifest
       run: |
+        kubectl apply -f k8s/namespace.yaml
         kubectl apply -f k8s/deployment.yaml
         kubectl apply -f k8s/service.yaml
         
