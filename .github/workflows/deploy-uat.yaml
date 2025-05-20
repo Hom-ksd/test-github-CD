@@ -6,12 +6,15 @@ on:
       - main
     paths:
       - 'uat/**'
-      
+  repository_dispatch:
+    types: [cd-uat]
+
 jobs:
   build-and-deploy:
     runs-on: self-hosted
     env:
       DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
+      IMAGE: ${{ secrets.DOCKER_USERNAME }}/backend-api-test:${{ github.event.client_payload.image_tag }}
 
     steps:
     - name: Checkout
@@ -23,16 +26,15 @@ jobs:
         username: ${{ secrets.DOCKER_USERNAME }}
         password: ${{ secrets.DOCKER_PASSWORD }}
     
-    - name: Load .env and export image
-      run: |
-        source dev/.dev.env
-        echo "IMAGE=${DOCKER_USERNAME}/${IMAGE}" >> $GITHUB_ENV
-        echo "IMAGE_TAG=${IMAGE}" >> $GITHUB_ENV
+    # - name: Load .env and export image
+    #   run: |
+    #     source dev/.dev.env
+    #     echo "IMAGE=${DOCKER_USERNAME}/${IMAGE}" >> $GITHUB_ENV
+    #     echo "IMAGE_TAG=${IMAGE}" >> $GITHUB_ENV
 
     - name: Show image info
       run: |
         echo "Image: $IMAGE"
-        echo "Image tag only: $IMAGE_TAG"
 
     - name: Render K8s manifest from template
       run: |
@@ -40,11 +42,12 @@ jobs:
         export BACKEND_IMAGE=${IMAGE}
         envsubst < template/deployment.yaml.tpl > k8s/deployment.yaml
         envsubst < template/service.yaml.tpl > k8s/service.yaml
+        envsubst < template/namespace.yaml.tpl > k8s/namespace.yaml
       env:
           NAMESPACE: backend-uat
 
     - name: Apply manifest
       run: |
+        kubectl apply -f k8s/namespace.yaml
         kubectl apply -f k8s/deployment.yaml
         kubectl apply -f k8s/service.yaml
-        
